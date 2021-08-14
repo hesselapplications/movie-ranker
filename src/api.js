@@ -1,18 +1,19 @@
 var axios = require("axios").default;
 
-export default {
-    async search() {
-        var options = {
-            method: 'GET',
-            url: 'https://movie-database-imdb-alternative.p.rapidapi.com/',
-            params: { i: 'tt4154796', r: 'json' },
-            headers: {
-                'x-rapidapi-key': 'b97225f9c7msh53e09e4cbfacb91p1200a2jsn4ce380a01934',
-                'x-rapidapi-host': 'movie-database-imdb-alternative.p.rapidapi.com'
-            }
-        };
+const apiKey = "a8f551fd12a4b1c7e0039f0463f640a5";
 
-        const response = await axios.request(options);
+export default {
+    async getMovie(id) {
+        const url = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`
+        const response = await axios.get(url);
         return response.data;
+    },
+    async searchMovies(title) {
+        const url = `https://api.themoviedb.org/3/search/movie?query=${title}&api_key=${apiKey}`
+        const response = await axios.get(url);
+        return response.data;
+    },
+    getImageUrl(path) {
+        return `https://image.tmdb.org/t/p/w500/${path}?api_key=${apiKey}`
     }
 }
