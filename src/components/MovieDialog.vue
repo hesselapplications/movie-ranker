@@ -23,21 +23,12 @@
 </template>
 
 <script>
-import moment from "moment";
-
 export default {
   data() {
     return {
       movie: null,
       dialog: false,
     };
-  },
-  computed: {
-    releaseDate() {
-      if (!this.movie) return null;
-      const date = this.movie["release_date"];
-      return moment(date).format("MMM Do, YYYY");
-    },
   },
   methods: {
     close() {
