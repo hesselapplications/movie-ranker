@@ -1,9 +1,11 @@
 <template>
-  <v-badge class="d-block" :color="color" overlap left bordered :content="rank">
-    <v-card class="movie" :img="imageUrl">
-      <v-responsive :aspect-ratio="2 / 3"> </v-responsive>
-    </v-card>
-  </v-badge>
+  <v-card :style="`cursor: ${draggable ? 'grab' : 'default'}`" :img="imageUrl" v-on="$listeners">
+    <v-responsive :aspect-ratio="2 / 3">
+      <div class="rank text-caption font-weight-bold" :style="{ background: color }">
+        {{ rank }}
+      </div>
+    </v-responsive>
+  </v-card>
 </template>
 
 <script>
@@ -14,6 +16,7 @@ export default {
   props: {
     rank: Number,
     movie: Object,
+    draggable: Boolean
   },
   data() {
     return {
@@ -29,12 +32,24 @@ export default {
   async created() {
     const palette = await Vibrant.from(this.imageUrl).getPalette();
     this.color = palette.DarkMuted.hex;
-  }
+  },
 };
 </script>
 
 <style scoped>
-.movie {
-  cursor: grab;
+.rank {
+  display: inline-block;
+  user-select: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding: 0px 4px;
+
+  border-top-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-color: white;
+  border-width: 2px;
+  border-style: solid;
+  color: white;
 }
 </style>

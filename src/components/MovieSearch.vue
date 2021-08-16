@@ -46,13 +46,16 @@ export default {
       if (!this.query) return;
       if (this.query == this.selectedMovie?.title) return;
 
+      const today = new Date().toISOString().slice(0, 10);
+
       this.loading = true;
       const { results } = await api.searchMovies(this.query.toLowerCase());
       this.movies = results
-        .filter(result => !this.excludedMovieIds.has(result.id))
-        .filter(result => result["poster_path"] != null);
+        .filter((result) => !this.excludedMovieIds.has(result.id))
+        .filter((result) => result["poster_path"] != null)
+        .filter((result) => result["release_date"] <= today);
       this.loading = false;
-    }, 500),
+    }, 300),
 
     movieSelected(movie) {
       if (!movie || typeof movie != "object") return;

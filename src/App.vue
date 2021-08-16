@@ -1,18 +1,22 @@
 <template>
   <v-app>
-    <v-main class="primary">
+    <v-main class="secondary">
       <v-container>
-        <v-row justify="center">
+        <v-row justify="center" class="px-2">
           <v-col lg="6" md="8" sm="10" cols="12">
             <!-- SEARCH -->
             <movie-search
+            class="mt-2"
               @movie-selected="movieSelected"
               :excluded-movies="movies"
               solo
             />
 
-            <!-- LIST -->
-            <movies v-if="movies.length > 0" class="mt-4" v-model="movies" />
+            <!-- MOVIES -->
+            <movies class="mt-4" v-model="movies" />
+
+            <!-- MOVIE DIALOG -->
+            <movie-dialog />
 
             <!-- ATTRIBUTION -->
             <attribution class="mt-4" />
@@ -27,12 +31,14 @@
 import Movies from "@/components/Movies.vue";
 import MovieSearch from "@/components/MovieSearch.vue";
 import Attribution from "@/components/Attribution.vue";
+import MovieDialog from "@/components/MovieDialog.vue";
 
 export default {
   components: {
     Movies,
     MovieSearch,
     Attribution,
+    MovieDialog,
   },
   data() {
     return {
@@ -41,14 +47,14 @@ export default {
   },
   methods: {
     movieSelected(movie) {
-      this.movies.push(movie);
+      this.movies.unshift(movie);
     },
   },
-  // async created() {
-  //   const movies = await api.searchMovie("Fight club");
-  //   const movie = movies.results[0];
-  //   const imageUrl = await api.getImageUrl(movie.poster_path);
-  //   console.log(movies, movie, imageUrl);
-  // },
+  created() {
+    this.$root.$on("remove-movie", (movie) => {
+      const index = this.movies.indexOf(movie);
+      this.movies.splice(index, 1);
+    });
+  },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="text-caption">
+  <div class="text-caption text-center">
     <v-img
       class="d-inline-block"
       :src="require('@/assets/tmdb.svg')"
