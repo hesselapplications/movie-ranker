@@ -33,8 +33,13 @@ export default {
             .limit(1)
             .get();
 
-        if (querySnapshot.docs.length == 0) return null;
-        return querySnapshot.docs[0].id;
+        if (querySnapshot.docs.length >= 1) {
+            return querySnapshot.docs[0].id;
+
+        } else {
+            const doc = await this.createMoviesList(userId);
+            return doc.id;
+        }
     },
 
     async getMoviesList(listId) {
@@ -43,16 +48,29 @@ export default {
             .doc(listId)
             .get();
 
-        if (!doc.exists) return [];
-        const movieList = doc.data();
-        return {
-            listId: doc.id,
-            ...movieList
-        };
+        if (doc.exists) {
+            const movieList = doc.data();
+            return {
+                listId: doc.id,
+                ...movieList
+            };
+
+        } else {
+            return null;
+        }
     },
 
-    async saveMoviesList(moviesList) {
-        await firebase.firestore
+    async createMoviesList(userId) {
+        return await firebase.firestore
+            .collection("lists")
+            .add({
+                movieIds: [],
+                userId: userId
+            })
+    },
+
+    async updateMoviesList(moviesList) {
+        return await firebase.firestore
             .collection("lists")
             .doc(moviesList.listId)
             .update({

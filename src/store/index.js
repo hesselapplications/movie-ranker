@@ -1,27 +1,24 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import firebase from "@/firebase.js";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     user: null,
+    moviesList: null
   },
   mutations: {
     setUser(state, user) {
       state.user = user;
+    },
+    setMoviesList(state, moviesList) {
+      state.moviesList = moviesList;
     }
   },
-  actions: {
-    async signIn({ commit }) {
-      var { user } = await firebase.signIn();
-      commit("setUser", user);
-    },
-
-    async signOut({ commit }) {
-      await firebase.signOut();
-      commit("setUser", null);
-    },
-  },
+  getters: {
+    isUsersList: state => {
+      return state.user && state.moviesList && state.moviesList.userId == state.user.uid;
+    }
+  }
 })

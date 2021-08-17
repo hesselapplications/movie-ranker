@@ -12,9 +12,15 @@
       <v-card-actions>
         <v-spacer></v-spacer>
 
-        <v-btn color="grey text-darken-1" text @click="close"> Cancel </v-btn>
+        <v-btn color="grey text-darken-1" text @click="close"> Close </v-btn>
 
-        <v-btn color="red" depressed dark @click="removeFromList">
+        <v-btn
+          v-if="isUsersList"
+          color="red"
+          depressed
+          dark
+          @click="removeFromList"
+        >
           Remove
         </v-btn>
       </v-card-actions>
@@ -24,6 +30,7 @@
 
 <script>
 import api from "@/api.js";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -31,6 +38,9 @@ export default {
       movie: null,
       dialog: false,
     };
+  },
+  computed: {
+    ...mapGetters(["isUsersList"]),
   },
   methods: {
     close() {

@@ -19,6 +19,10 @@ const routes = [
     }
   },
   {
+    path: '/lists/not-found',
+    component: () => import("@/views/NotFound.vue"),
+  },
+  {
     path: '/lists/:listId',
     props: true,
     component: () => import("@/views/MoviesList.vue"),

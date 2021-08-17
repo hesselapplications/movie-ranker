@@ -7,8 +7,9 @@
       v-bind="draggableOptions"
     >
       <v-col
-        xl="2"
-        md="3"
+        xl="1"
+        md="2"
+        sm="3"
         cols="4"
         class="movie"
         v-for="(id, index) in model"
@@ -42,10 +43,10 @@ export default {
     draggable,
     Movie,
   },
+  props: {
+    draggable: Boolean
+  },
   computed: {
-    draggable() {
-      return this.model.length  > 1;
-    },
     draggableOptions() {
       return {
         tag: "div",
