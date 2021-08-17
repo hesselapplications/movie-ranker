@@ -1,21 +1,24 @@
 <template>
   <v-combobox
     v-model="selectedMovie"
-    v-bind="$attrs"
     placeholder="Search movies"
     :search-input.sync="query"
     :loading="loading"
     :items="movies"
     item-text="title"
-    append-icon="mdi-magnify"
+    prepend-inner-icon="mdi-magnify"
     @update:search-input="search"
     no-filter
     hide-no-data
     hide-selected
     hide-details
     return-object
+    solo
     @input="movieSelected"
   >
+    <template v-slot:append>
+      <slot name="actions"/>
+    </template>
   </v-combobox>
 </template>
 

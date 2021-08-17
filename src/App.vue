@@ -6,14 +6,26 @@
           <v-col lg="6" md="8" sm="10" cols="12">
             <!-- SEARCH -->
             <movie-search
-            class="mt-2"
+              class="mt-2"
               @movie-selected="movieSelected"
               :excluded-movies="movies"
-              solo
-            />
+            >
+              <!-- MENU -->
+              <template v-slot:actions>
+                <app-menu />
+              </template>
+            </movie-search>
 
             <!-- MOVIES -->
-            <movies class="mt-4" v-model="movies" />
+            <movies v-if="!loading" class="mt-4" v-model="movies" />
+
+            <!-- LOADING -->
+            <div v-else class="d-flex align-center justify-center py-16">
+              <v-progress-circular
+                indeterminate
+                color="primary"
+              ></v-progress-circular>
+            </div>
 
             <!-- MOVIE DIALOG -->
             <movie-dialog />
@@ -32,6 +44,8 @@ import Movies from "@/components/Movies.vue";
 import MovieSearch from "@/components/MovieSearch.vue";
 import Attribution from "@/components/Attribution.vue";
 import MovieDialog from "@/components/MovieDialog.vue";
+import AppMenu from "@/components/AppMenu.vue";
+import api from "@/api.js";
 
 export default {
   components: {
@@ -39,10 +53,12 @@ export default {
     MovieSearch,
     Attribution,
     MovieDialog,
+    AppMenu,
   },
   data() {
     return {
       movies: [],
+      loading: true,
     };
   },
   methods: {
@@ -50,11 +66,14 @@ export default {
       this.movies.unshift(movie);
     },
   },
-  created() {
+  async created() {
     this.$root.$on("remove-movie", (movie) => {
       const index = this.movies.indexOf(movie);
       this.movies.splice(index, 1);
     });
+
+    this.movies = await api.getMovies("XPlfk5Vx82yEHt8DoWCj");
+    this.loading = false;
   },
 };
 </script>

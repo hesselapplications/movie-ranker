@@ -50,7 +50,7 @@ export default {
       return {
         tag: "div",
         class: "row row--dense",
-        delay: 500,
+        delay: 100,
         delayOnTouchOnly: true,
         animation: 300,
         disabled: !this.draggable
