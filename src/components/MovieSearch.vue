@@ -28,7 +28,7 @@ import api from "@/api.js";
 
 export default {
   props: {
-    excludedMovies: Array,
+    excludedMovieIds: Set,
   },
   data() {
     return {
@@ -37,12 +37,6 @@ export default {
       loading: false,
       movies: [],
     };
-  },
-  computed: {
-    excludedMovieIds() {
-      const ids = this.excludedMovies.map((movie) => movie.id);
-      return new Set(ids);
-    },
   },
   methods: {
     search: _.debounce(async function () {
@@ -62,7 +56,7 @@ export default {
 
     movieSelected(movie) {
       if (!movie || typeof movie != "object") return;
-      this.$emit("movie-selected", movie);
+      this.$emit("movie-selected", movie.id);
       this.$nextTick(() => {
         this.query = null;
         this.selectedMovie = null;

@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import api from "@/api.js";
+
 export default {
   data() {
     return {
@@ -35,13 +37,13 @@ export default {
       this.dialog = false;
     },
     removeFromList() {
-      this.$root.$emit("remove-movie", this.movie);
+      this.$root.$emit("remove-movie", this.movie.id);
       this.close();
     },
   },
   created() {
-    this.$root.$on("movie-clicked", (movie) => {
-      this.movie = movie;
+    this.$root.$on("movie-clicked", async (id) => {
+      this.movie = await api.getMovie(id);
       this.dialog = true;
     });
   },

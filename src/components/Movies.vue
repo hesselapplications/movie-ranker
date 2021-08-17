@@ -11,10 +11,10 @@
         md="3"
         cols="4"
         class="movie"
-        v-for="(movie, index) in model"
+        v-for="(id, index) in model"
         :key="index"
       >
-        <movie :movie="movie" :rank="index + 1" :draggable="draggable" @click="movieClicked(movie)" />
+        <movie :id="id" :rank="index + 1" :draggable="draggable" @click="movieClicked(id)" />
       </v-col>
     </draggable>
 
@@ -58,8 +58,8 @@ export default {
     },
   },
   methods: {
-    movieClicked(movie) {
-      this.$root.$emit("movie-clicked", movie);
+    movieClicked(id) {
+      this.$root.$emit("movie-clicked", id);
     },
   },
 };

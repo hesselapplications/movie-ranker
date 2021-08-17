@@ -1,7 +1,14 @@
 <template>
-  <v-card :style="`cursor: ${draggable ? 'grab' : 'default'}`" :img="imageUrl" v-on="$listeners">
+  <v-card
+    :style="`cursor: ${draggable ? 'grab' : 'default'}`"
+    :img="imageUrl"
+    v-on="$listeners"
+  >
     <v-responsive :aspect-ratio="2 / 3">
-      <div class="rank text-caption font-weight-bold" :style="{ background: color }">
+      <div
+        class="rank text-caption font-weight-bold"
+        :style="{ background: color }"
+      >
         {{ rank }}
       </div>
     </v-responsive>
@@ -15,23 +22,34 @@ import api from "@/api.js";
 export default {
   props: {
     rank: Number,
-    movie: Object,
-    draggable: Boolean
+    id: Number,
+    draggable: Boolean,
   },
   data() {
     return {
       color: "grey",
+      movie: null,
     };
+  },
+  watch: {
+    async movie(movie) {
+      if (!movie) return "grey";
+      const palette = await Vibrant.from(this.imageUrl).getPalette();
+      this.color = palette.DarkMuted.hex;
+    },
+    id: {
+      immediate: true,
+      async handler(id) {
+        this.movie = await api.getMovie(id);
+      },
+    },
   },
   computed: {
     imageUrl() {
+      if (!this.movie) return null;
       const path = this.movie["poster_path"];
       return api.getImageUrl(path);
     },
-  },
-  async created() {
-    const palette = await Vibrant.from(this.imageUrl).getPalette();
-    this.color = palette.DarkMuted.hex;
   },
 };
 </script>

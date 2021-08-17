@@ -7,13 +7,8 @@
     </template>
 
     <v-list>
-      <!-- SIGN IN -->
-      <v-list-item v-if="!userIsSignedIn" @click="signIn">
-        <v-list-item-title>Sign In</v-list-item-title>
-      </v-list-item>
-
       <!-- SIGN OUT -->
-      <v-list-item v-else @click="signOut">
+      <v-list-item @click="signOut">
         <v-list-item-title>Sign Out</v-list-item-title>
       </v-list-item>
 
@@ -32,7 +27,6 @@ export default {
   data() {
     return {
       showMenu: false,
-      userIsSignedIn: false,
     };
   },
   computed: {
@@ -40,16 +34,9 @@ export default {
       return navigator.share;
     },
   },
-  async created() {
-    this.userIsSignedIn = await api.userIsSignedIn();
-  },
   methods: {
-    signIn() {
-      api.signIn();
-    },
     async signOut() {
       await api.signOut();
-      this.userIsSignedIn = false;
     },
     share() {
       navigator.share({

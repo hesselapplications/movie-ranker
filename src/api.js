@@ -26,26 +26,45 @@ export default {
         return `https://image.tmdb.org/t/p/w500/${path}?api_key=${apiKey}`
     },
 
-    async getMovies(listId) {
-        const doc = await firebase.firestore.collection("lists").doc(listId).get();
-        if (!doc.exists) return [];
+    async getMoviesListId(userId) {
+        const querySnapshot = await firebase.firestore
+            .collection("lists")
+            .where("userId", "==", userId)
+            .limit(1)
+            .get();
 
-        const movieIds = doc.data().movieIds;
-        console.log(movieIds)
-        const movies = [];
-        for (let id of movieIds) {
-            const movie = await this.getMovie(id);
-            movies.push(movie);
-        }
-
-        return movies;
+        if (querySnapshot.docs.length == 0) return null;
+        return querySnapshot.docs[0].id;
     },
 
-    async userIsSignedIn() {
+    async getMoviesList(listId) {
+        const doc = await firebase.firestore
+            .collection("lists")
+            .doc(listId)
+            .get();
+
+        if (!doc.exists) return [];
+        const movieList = doc.data();
+        return {
+            listId: doc.id,
+            ...movieList
+        };
+    },
+
+    async saveMoviesList(moviesList) {
+        await firebase.firestore
+            .collection("lists")
+            .doc(moviesList.listId)
+            .update({
+                movieIds: moviesList.movieIds
+            });
+    },
+
+    async getUser() {
         return new Promise((resolve, reject) => {
             const unsubscribe = firebase.auth.onAuthStateChanged(user => {
                 unsubscribe();
-                resolve(user != null);
+                resolve(user);
             }, reject);
         })
     },
