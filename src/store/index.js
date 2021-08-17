@@ -6,19 +6,19 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: null,
-    moviesList: null
+    movieList: null
   },
   mutations: {
     setUser(state, user) {
       state.user = user;
     },
-    setMoviesList(state, moviesList) {
-      state.moviesList = moviesList;
+    setMovieList(state, movieList) {
+      state.movieList = movieList;
     }
   },
   getters: {
     isUsersList: state => {
-      return state.user && state.moviesList && state.moviesList.userId == state.user.uid;
+      return state.user && state.movieList && state.movieList.userId == state.user.uid;
     }
   }
 })

@@ -12,14 +12,14 @@ const routes = [
   {
     path: '/lists/:listId',
     props: true,
-    component: () => import("@/views/MoviesList.vue"),
+    component: () => import("@/views/MovieList.vue"),
   },
   {
     path: '*',
     beforeEnter: async (to, from, next) => {
       const user = await api.getUser();
       if (user) {
-        const movieListId = await api.getMoviesListId(user.uid);
+        const movieListId = await api.getMovieListId(user.uid);
         next(`/lists/${movieListId}`);
 
       } else {

@@ -16,7 +16,7 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState(["user", "moviesList"]),
+    ...mapState(["user", "movieList"]),
     shareSupported() {
       return navigator.share;
     },
@@ -39,6 +39,6 @@ export default {
 </script>
 <style scoped>
 .title {
-  text-overflow: none !important;
+  overflow: visible;
 }
 </style>

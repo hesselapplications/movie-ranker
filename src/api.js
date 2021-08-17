@@ -26,7 +26,7 @@ export default {
         return `https://image.tmdb.org/t/p/w500/${path}?api_key=${apiKey}`
     },
 
-    async getMoviesListId(userId) {
+    async getMovieListId(userId) {
         const querySnapshot = await firebase.firestore
             .collection("lists")
             .where("userId", "==", userId)
@@ -37,12 +37,12 @@ export default {
             return querySnapshot.docs[0].id;
 
         } else {
-            const doc = await this.createMoviesList(userId);
+            const doc = await this.createMovieList(userId);
             return doc.id;
         }
     },
 
-    async getMoviesList(listId) {
+    async getMovieList(listId) {
         const doc = await firebase.firestore
             .collection("lists")
             .doc(listId)
@@ -60,7 +60,7 @@ export default {
         }
     },
 
-    async createMoviesList(userId) {
+    async createMovieList(userId) {
         return await firebase.firestore
             .collection("lists")
             .add({
@@ -69,12 +69,12 @@ export default {
             })
     },
 
-    async updateMoviesList(moviesList) {
+    async updateMovieList(movieList) {
         return await firebase.firestore
             .collection("lists")
-            .doc(moviesList.listId)
+            .doc(movieList.listId)
             .update({
-                movieIds: moviesList.movieIds
+                movieIds: movieList.movieIds
             });
     },
 

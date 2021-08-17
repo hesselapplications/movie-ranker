@@ -2,7 +2,7 @@
   <div>
     <navigation />
 
-    <v-container v-if="moviesList">
+    <v-container v-if="movieList">
       <v-row justify="center" class="px-2">
         <v-col>
           <!-- SEARCH -->
@@ -10,14 +10,14 @@
             v-if="isUsersList"
             class="mt-2"
             @movie-selected="movieSelected"
-            :excluded-movie-ids="new Set(moviesList.movieIds)"
+            :excluded-movie-ids="new Set(movieList.movieIds)"
           />
 
           <!-- MOVIES -->
           <movies
             v-if="!loading"
             class="mt-4 mb-16"
-            v-model="moviesList.movieIds"
+            v-model="movieList.movieIds"
             :draggable="draggable"
           />
 
@@ -62,16 +62,16 @@ export default {
   },
   data() {
     return {
-      moviesList: null,
+      movieList: null,
       loading: true,
     };
   },
   watch: {
-    moviesList: {
+    movieList: {
       deep: true,
-      handler(newMoviesList, oldMoviesList) {
-        if (newMoviesList && oldMoviesList) {
-          api.updateMoviesList(newMoviesList);
+      handler(newMovieList, oldMovieList) {
+        if (newMovieList && oldMovieList) {
+          api.updateMovieList(newMovieList);
         }
       },
     },
@@ -79,8 +79,8 @@ export default {
   computed: {
     ...mapGetters(["isUsersList"]),
     draggable() {
-      if (this.moviesList) {
-        const multipleMovies = this.moviesList.movieIds.length > 1;
+      if (this.movieList) {
+        const multipleMovies = this.movieList.movieIds.length > 1;
         return multipleMovies && this.isUsersList;
       } else {
         return false;
@@ -89,19 +89,19 @@ export default {
   },
   methods: {
     movieSelected(id) {
-      this.moviesList.movieIds.unshift(id);
+      this.movieList.movieIds.unshift(id);
     },
   },
   async created() {
     this.$root.$on("remove-movie", (id) => {
-      const index = this.moviesList.movieIds.indexOf(id);
-      this.moviesList.movieIds.splice(index, 1);
+      const index = this.movieList.movieIds.indexOf(id);
+      this.movieList.movieIds.splice(index, 1);
     });
 
-    const moviesList = await api.getMoviesList(this.listId);
-    if (moviesList) {
-      this.moviesList = moviesList;
-      this.$store.commit("setMoviesList", moviesList);
+    const movieList = await api.getMovieList(this.listId);
+    if (movieList) {
+      this.movieList = movieList;
+      this.$store.commit("setMovieList", movieList);
       this.loading = false;
     } else {
       this.$router.push("/lists/not-found");
