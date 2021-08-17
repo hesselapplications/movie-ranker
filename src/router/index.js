@@ -6,7 +6,16 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/lists/not-found',
+    component: () => import("@/views/NotFound.vue"),
+  },
+  {
+    path: '/lists/:listId',
+    props: true,
+    component: () => import("@/views/MoviesList.vue"),
+  },
+  {
+    path: '*',
     beforeEnter: async (to, from, next) => {
       const user = await api.getUser();
       if (user) {
@@ -18,15 +27,6 @@ const routes = [
       }
     }
   },
-  {
-    path: '/lists/not-found',
-    component: () => import("@/views/NotFound.vue"),
-  },
-  {
-    path: '/lists/:listId',
-    props: true,
-    component: () => import("@/views/MoviesList.vue"),
-  }
 ]
 
 const router = new VueRouter({

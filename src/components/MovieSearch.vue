@@ -17,7 +17,7 @@
     @input="movieSelected"
   >
     <template v-slot:append>
-      <slot name="actions"/>
+      <span><!-- Dummy content so nothing shows --></span>
     </template>
   </v-combobox>
 </template>

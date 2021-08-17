@@ -61,13 +61,10 @@ export default {
   position: absolute;
   top: 0px;
   left: 0px;
-  padding: 0px 4px;
+  padding: 2px 6px;
 
   border-top-left-radius: 4px;
   border-bottom-right-radius: 4px;
-  border-color: white;
-  border-width: 2px;
-  border-style: solid;
   color: white;
 }
 </style>

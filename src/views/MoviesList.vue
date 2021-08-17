@@ -1,23 +1,17 @@
 <template>
   <div>
+    <navigation />
+
     <v-container v-if="moviesList">
       <v-row justify="center" class="px-2">
         <v-col>
-          <!-- SIGN IN -->
-          <sign-in v-if="!user" />
-
           <!-- SEARCH -->
           <movie-search
-            v-else
+            v-if="isUsersList"
             class="mt-2"
             @movie-selected="movieSelected"
             :excluded-movie-ids="new Set(moviesList.movieIds)"
-          >
-            <!-- MENU -->
-            <template v-slot:actions>
-              <app-menu />
-            </template>
-          </movie-search>
+          />
 
           <!-- MOVIES -->
           <movies
@@ -48,22 +42,20 @@
 
 <script>
 import Movies from "@/components/Movies.vue";
-import SignIn from "@/components/SignIn.vue";
 import MovieSearch from "@/components/MovieSearch.vue";
 import Attribution from "@/components/Attribution.vue";
 import MovieDialog from "@/components/MovieDialog.vue";
-import AppMenu from "@/components/AppMenu.vue";
 import api from "@/api.js";
-import { mapState, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
+import Navigation from "@/components/Navigation.vue";
 
 export default {
   components: {
     Movies,
-    SignIn,
     MovieSearch,
     Attribution,
     MovieDialog,
-    AppMenu,
+    Navigation,
   },
   props: {
     listId: String,
@@ -94,7 +86,6 @@ export default {
         return false;
       }
     },
-    ...mapState(["user"]),
   },
   methods: {
     movieSelected(id) {
