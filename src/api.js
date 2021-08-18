@@ -26,6 +26,7 @@ export default {
         const movie = response.data;
         return {
             posterUrl: getImageUrl(movie["poster_path"]),
+            backdropUrl: getImageUrl(movie["backdrop_path"]),
             ...movie
         };
     }),

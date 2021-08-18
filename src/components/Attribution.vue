@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="d-flex justify-center" color="secondary" fixed>
+  <v-footer class="d-flex justify-center" color="accent" fixed>
     <div class="text-caption">
       <v-img
         class="d-inline-block"

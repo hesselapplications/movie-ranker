@@ -1,7 +1,7 @@
 
 <template>
   <v-app>
-    <v-main class="secondary">
+    <v-main class="accent">
       <router-view />
     </v-main>
   </v-app>

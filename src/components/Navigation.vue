@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar dark color="#455A64" app fixed>
+  <v-app-bar dark color="secondary" app fixed>
     <v-icon>mdi-grain</v-icon>
     <slot />
     <v-spacer></v-spacer>
@@ -19,15 +19,16 @@
 
 <script>
 import api from "@/api.js";
+import { mapState } from "vuex";
 
 export default {
   data() {
     return {
-      user: null,
       loaded: false
     }
   },
   computed: {
+    ...mapState(["user"]),
     shareSupported() {
       return navigator.share;
     },
@@ -36,7 +37,7 @@ export default {
     },
   },
   async created() {
-    this.user = await api.getUser();
+    await api.getUser();
     this.loaded = true;
   },
   methods: {

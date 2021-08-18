@@ -5,7 +5,7 @@
       :style="`cursor: ${draggable ? 'grab' : 'default'}`"
       :img="movie.posterUrl"
       v-on="$listeners"
-      color="secondary"
+      color="accent"
     >
       <v-responsive :aspect-ratio="2 / 3">
         <div
@@ -31,7 +31,7 @@ export default {
   },
   data() {
     return {
-      color: "secondary",
+      color: "accent",
       movie: {},
       loaded: false,
     };
