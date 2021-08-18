@@ -1,7 +1,7 @@
 <template>
   <v-card
     :style="`cursor: ${draggable ? 'grab' : 'default'}`"
-    :img="imageUrl"
+    :img="movie.posterUrl"
     v-on="$listeners"
   >
     <v-responsive :aspect-ratio="2 / 3">
@@ -28,27 +28,20 @@ export default {
   data() {
     return {
       color: "grey",
-      movie: null,
+      movie: {},
     };
   },
   watch: {
-    async movie(movie) {
-      if (!movie) return "grey";
-      const palette = await Vibrant.from(this.imageUrl).getPalette();
-      this.color = palette.DarkMuted.hex;
-    },
     id: {
       immediate: true,
-      async handler(id) {
-        this.movie = await api.getMovie(id);
+      async handler(newValue, oldValue) {
+        console.log(newValue, oldValue)
+        if (newValue != oldValue) {
+          this.movie = await api.getMovie(newValue);
+          const palette = await Vibrant.from(this.movie.posterUrl).getPalette();
+          this.color = palette.DarkMuted.hex;
+        }
       },
-    },
-  },
-  computed: {
-    imageUrl() {
-      if (!this.movie) return null;
-      const path = this.movie["poster_path"];
-      return api.getImageUrl(path);
     },
   },
 };
