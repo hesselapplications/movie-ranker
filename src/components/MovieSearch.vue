@@ -1,7 +1,7 @@
 <template>
   <v-combobox
     v-model="selectedMovie"
-    placeholder="Search movies"
+    placeholder="Search"
     :search-input.sync="query"
     :loading="loading"
     :items="movies"

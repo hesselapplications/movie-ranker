@@ -6,7 +6,7 @@
       <v-fade-transition>
         <movie-search
           v-if="isUsersList && movieList"
-          class="mx-4"
+          class="mr-4"
           @movie-selected="movieSelected"
           :excluded-movie-ids="new Set(movieList.movieIds)"
         />

@@ -1,6 +1,6 @@
 <template>
   <v-app-bar dark color="secondary" app fixed>
-    <v-icon>mdi-grain</v-icon>
+    <v-icon v-if="!isMobile" class="mr-4">mdi-grain</v-icon>
     <slot />
     <v-spacer></v-spacer>
     <v-fade-transition>
@@ -33,7 +33,7 @@ export default {
       return navigator.share;
     },
     isMobile() {
-      return !this.$vuetify.breakpoint.mdAndUp;
+      return !this.$vuetify.breakpoint.smAndUp;
     },
   },
   async created() {
