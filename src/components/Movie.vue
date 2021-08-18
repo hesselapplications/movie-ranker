@@ -34,13 +34,10 @@ export default {
   watch: {
     id: {
       immediate: true,
-      async handler(newValue, oldValue) {
-        console.log(newValue, oldValue)
-        if (newValue != oldValue) {
-          this.movie = await api.getMovie(newValue);
-          const palette = await Vibrant.from(this.movie.posterUrl).getPalette();
-          this.color = palette.DarkMuted.hex;
-        }
+      async handler(id) {
+        this.movie = await api.getMovie(id);
+        const palette = await Vibrant.from(this.movie.posterUrl).getPalette();
+        this.color = palette.DarkMuted.hex;
       },
     },
   },

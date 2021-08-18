@@ -13,7 +13,7 @@
         cols="4"
         class="movie"
         v-for="(id, index) in model"
-        :key="index"
+        :key="id"
       >
         <movie :id="id" :rank="index + 1" :draggable="draggable" @click="movieClicked(id)" />
       </v-col>
