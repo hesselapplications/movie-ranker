@@ -1,6 +1,7 @@
 <template>
   <v-app-bar dark color="#455A64">
-    <v-app-bar-title v-if="$vuetify.breakpoint.mdAndUp" class="title">Movie Rank</v-app-bar-title>
+    <v-icon left>mdi-grain</v-icon>
+    <span v-if="$vuetify.breakpoint.mdAndUp" class="text-h6"> Movie Rank </span>
     <v-spacer></v-spacer>
     <v-toolbar-items>
       <v-btn v-if="shareSupported" text @click="share">Share</v-btn>
