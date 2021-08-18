@@ -1,33 +1,37 @@
 <template>
   <div>
-    <navigation />
+    <!-- NAVIGATION -->
+    <navigation>
+      <!-- SEARCH -->
+      <v-fade-transition>
+        <movie-search
+          v-if="isUsersList && movieList"
+          class="mx-4"
+          @movie-selected="movieSelected"
+          :excluded-movie-ids="new Set(movieList.movieIds)"
+        />
+      </v-fade-transition>
+    </navigation>
 
     <v-container v-if="movieList">
       <v-row justify="center" class="px-2">
         <v-col>
-          <!-- SEARCH -->
-          <movie-search
-            v-if="isUsersList"
-            class="mt-2"
-            @movie-selected="movieSelected"
-            :excluded-movie-ids="new Set(movieList.movieIds)"
-          />
-
-          <!-- MOVIES -->
-          <movies
-            v-if="!loading"
-            class="mt-4 mb-16"
-            v-model="movieList.movieIds"
-            :draggable="draggable"
-          />
 
           <!-- LOADING -->
-          <div v-else class="d-flex align-center justify-center py-16">
+          <div v-if="loading" class="d-flex align-center justify-center py-16">
             <v-progress-circular
               indeterminate
               color="primary"
             ></v-progress-circular>
           </div>
+          
+          <!-- MOVIES -->
+          <movies
+            v-else
+            class="mt-4 mb-16"
+            v-model="movieList.movieIds"
+            :draggable="draggable"
+          />
 
           <!-- MOVIE DIALOG -->
           <movie-dialog />

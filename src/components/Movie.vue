@@ -1,18 +1,22 @@
 <template>
-  <v-card
-    :style="`cursor: ${draggable ? 'grab' : 'default'}`"
-    :img="movie.posterUrl"
-    v-on="$listeners"
-  >
-    <v-responsive :aspect-ratio="2 / 3">
-      <div
-        class="rank text-caption font-weight-bold"
-        :style="{ background: color }"
-      >
-        {{ rank }}
-      </div>
-    </v-responsive>
-  </v-card>
+  <v-fade-transition>
+    <v-card
+      v-show="loaded"
+      :style="`cursor: ${draggable ? 'grab' : 'default'}`"
+      :img="movie.posterUrl"
+      v-on="$listeners"
+      color="secondary"
+    >
+      <v-responsive :aspect-ratio="2 / 3">
+        <div
+          class="rank text-caption font-weight-bold"
+          :style="{ background: color }"
+        >
+          {{ rank }}
+        </div>
+      </v-responsive>
+    </v-card>
+  </v-fade-transition>
 </template>
 
 <script>
@@ -27,17 +31,20 @@ export default {
   },
   data() {
     return {
-      color: "grey",
+      color: "secondary",
       movie: {},
+      loaded: false,
     };
   },
   watch: {
     id: {
       immediate: true,
       async handler(id) {
+        this.loaded = false;
         this.movie = await api.getMovie(id);
         const palette = await Vibrant.from(this.movie.posterUrl).getPalette();
         this.color = palette.DarkMuted.hex;
+        this.loaded = true;
       },
     },
   },

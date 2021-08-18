@@ -14,6 +14,9 @@
     hide-details
     return-object
     solo
+    light
+    flat
+    dense
     @input="movieSelected"
   >
     <template v-slot:append>
