@@ -1,11 +1,13 @@
 import _ from "lodash";
 import axios from "axios";
-import firebase from "@/firebase.js";
+import { db, auth, googleAuthProvider } from "@/firebase.js";
 import store from "@/store";
+import { onAuthStateChanged, signInWithPopup, signInWithRedirect, signOut } from "firebase/auth";
+import { collection, query, where, getDocs, addDoc, doc, getDoc, updateDoc, limit } from "firebase/firestore";
 
-firebase.auth.onAuthStateChanged(async (user) => {
+onAuthStateChanged(auth, (user) => {
     store.commit("setUser", user);
-});
+})
 
 const apiKey = "a8f551fd12a4b1c7e0039f0463f640a5";
 
@@ -32,31 +34,32 @@ export default {
     }),
 
     async getMovieListId(userId) {
-        const querySnapshot = await firebase.firestore
-            .collection("lists")
-            .where("userId", "==", userId)
-            .limit(1)
-            .get();
+        const querySnapshot = await getDocs(
+            query(
+                collection(db, "lists"), 
+                where("userId", "==", userId),
+                limit(1)
+            )
+        )
 
-        if (querySnapshot.docs.length >= 1) {
+        if (!querySnapshot.empty) {
             return querySnapshot.docs[0].id;
 
         } else {
-            const doc = await this.createMovieList(userId);
-            return doc.id;
+            const docReference = await this.createMovieList(userId);
+            return docReference.id;
         }
     },
 
     async getMovieList(listId) {
-        const doc = await firebase.firestore
-            .collection("lists")
-            .doc(listId)
-            .get();
+        const docSnapshot = await getDoc(
+            doc(db, "lists", listId)
+        )
 
-        if (doc.exists) {
-            const movieList = doc.data();
+        if (docSnapshot.exists()) {
+            const movieList = docSnapshot.data();
             return {
-                listId: doc.id,
+                listId: docSnapshot.id,
                 ...movieList
             };
 
@@ -66,26 +69,22 @@ export default {
     },
 
     async createMovieList(userId) {
-        return await firebase.firestore
-            .collection("lists")
-            .add({
-                movieIds: [],
-                userId: userId
-            })
+        return await addDoc(collection(db, "lists"), {
+            movieIds: [],
+            userId: userId
+        });
     },
 
     async updateMovieList(movieList) {
-        return await firebase.firestore
-            .collection("lists")
-            .doc(movieList.listId)
-            .update({
-                movieIds: movieList.movieIds
-            });
+        return await updateDoc(
+            doc(db, "lists", movieList.listId), 
+            { movieIds: movieList.movieIds }
+        );
     },
 
     async getUser() {
         return new Promise((resolve, reject) => {
-            const unsubscribe = firebase.auth.onAuthStateChanged(user => {
+            const unsubscribe = onAuthStateChanged(auth, (user) => {
                 unsubscribe();
                 resolve(user);
             }, reject);
@@ -93,11 +92,17 @@ export default {
     },
 
     async signIn() {
-        var provider = firebase.googleAuthProvider;
-        await firebase.auth.signInWithRedirect(provider);
+        if (process.env.NODE_ENV === 'development') {
+            // Cannot get SSL working with redirect in local development
+            // Watch for blocked popups, set to always allow, then refresh page
+            await signInWithPopup(auth, googleAuthProvider);
+        } else {
+            await signInWithRedirect(auth, googleAuthProvider);
+        }
+        
     },
 
     async signOut() {
-        await firebase.auth.signOut();
+        await signOut(auth);
     },
 }

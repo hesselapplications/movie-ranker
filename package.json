@@ -11,7 +11,7 @@
     "@mdi/font": "5.9.55",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "firebase": "^8.9.1",
+    "firebase": "^11.3.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "node-vibrant": "^3.1.6",

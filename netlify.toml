@@ -1,3 +1,11 @@
+# Proxy Firebase authentication requests
+[[redirects]]
+  from = "/__/auth/*"
+  to = "https://movie-rank-9f18e.firebaseapp.com/__/auth/:splat"
+  status = 200
+  force = true
+
+# Redirect all paths to index.html (for single-page app routing)
 [[redirects]]
   from = "/*"
   to = "/index.html"
